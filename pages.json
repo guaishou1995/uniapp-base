@@ -20,6 +20,12 @@
   			"selectedIconPath": "static/logo.png",
   			"text": "首页"
   		},
+      {
+      	"pagePath": "pages/index/index",
+      	"iconPath": "/static/logo.png",
+      	"selectedIconPath": "static/logo.png",
+      	"text": "首页"
+      }
   	]
   },
 }
