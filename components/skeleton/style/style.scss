@@ -1,0 +1,43 @@
+  // 背景色
+  $backgroundFade: linear-gradient(90deg, #f0f0f0 25%, #fff 47%, #f0f0f0 53%);
+  
+  // 矩形块
+  $borderRadius:5rpx;
+	$backgroundImg:#d3d6dc;
+	$backgroundSkeleton:#f1f3f7;
+	
+	$item-img-width:180rpx;
+	$item-img-height:140rpx;
+	$item-img-skeleton:($backgroundSkeleton $item-img-height, transparent 0);
+	$item-img-position:0 20rpx;
+	
+	$item-title-width:220rpx;
+	$item-title-height:26rpx;
+	$item-title-skeleton:($backgroundSkeleton $item-title-height, transparent 0);
+	$item-title-position:210rpx 20rpx;
+	
+	$item-price-width:200rpx;
+	$item-price-height:60rpx;
+	$item-price-skeleton:($backgroundSkeleton $item-price-height, transparent 0);
+  
+  // 带动画的背景色
+  @mixin skeleton-fade($back) {
+    width: 100%;
+    height: 100%;
+    background-image: $back;
+    animation-duration: 1.5s;
+    animation-name: blink;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    background-size: 400% 100%
+  }
+  
+  @keyframes blink {
+  	0% {
+  		background-position: 100% 50%
+  	}
+  
+  	100% {
+  		background-position: 0 50%
+  	}
+  }

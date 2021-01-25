@@ -1,0 +1,10 @@
+dist/
+node_modules/
+unpackage/
+
+# components 下其它文件当作是市场插件，不进行格式化和校验（有的组件虽然有用，但是真的很多不规范）
+components/*
+!components/@com
+
+# 二维码生成js
+utils/

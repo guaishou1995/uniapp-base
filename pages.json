@@ -1,0 +1,25 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页",
+      }
+    },
+	],
+  // 设置底部 tab 的表现
+  "tabBar": {
+  	"color": "#999999",
+  	"selectedColor": "#59b698",
+  	"borderStyle": "white",
+  	"backgroundColor": "#fff",
+  	"list": [
+      {
+  			"pagePath": "pages/index/index",
+  			"iconPath": "/static/logo.png",
+  			"selectedIconPath": "static/logo.png",
+  			"text": "首页"
+  		},
+  	]
+  },
+}
