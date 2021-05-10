@@ -3,9 +3,50 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "首页",
+        "navigationBarTitleText": "首页"
       }
     },
+		{
+		  "path": "pages/account/index",
+		  "style": {
+		    "navigationBarTitleText": "我的"
+		  }
+		}
+	],
+	"subPackages": [
+		{
+			"root": "pagesScenic",
+			"pages": [
+				{
+				  "path": "index/index",
+				  "style": {
+				    "navigationBarTitleText": "导览"
+				  }
+				}
+			]
+		},
+		{
+			"root": "pagesShop",
+			"pages": [
+				{
+				  "path": "index/index",
+				  "style": {
+				    "navigationBarTitleText": "商城"
+				  }
+				}
+			]
+		},
+		{
+			"root": "pagesServe",
+			"pages": [
+				{
+				  "path": "index/index",
+				  "style": {
+				    "navigationBarTitleText": "服务"
+				  }
+				}
+			]
+		}
 	],
   // 设置底部 tab 的表现
   "tabBar": {
@@ -14,18 +55,28 @@
   	"borderStyle": "white",
   	"backgroundColor": "#fff",
   	"list": [
-      {
-  			"pagePath": "pages/index/index",
-  			"iconPath": "/static/logo.png",
-  			"selectedIconPath": "static/logo.png",
-  			"text": "首页"
-  		},
-      {
-      	"pagePath": "pages/index/index",
-      	"iconPath": "/static/logo.png",
-      	"selectedIconPath": "static/logo.png",
-      	"text": "首页"
-      }
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/images/wu.jpg",
+				"selectedIconPath": "static/images/wu.jpg",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/account/index",
+				"iconPath": "static/images/wu.jpg",
+				"selectedIconPath": "static/images/wu.jpg",
+				"text": "我的"
+			}
   	]
   },
+	"globalStyle": {
+	  "navigationBarTextStyle": "black",
+	  "navigationBarTitleText": "uni-app",
+	  "navigationBarBackgroundColor": "#fff",
+	  "backgroundColor": "#fff",
+	  "h5": {
+	    "titleNView": false
+	  },
+	  "mp-alipay": { "allowsBounceVertical": "NO" }
+	}
 }

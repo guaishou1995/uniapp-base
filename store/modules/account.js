@@ -10,7 +10,7 @@ export default {
     userInfo: {
       avatar: defaultAvatarSrc,
     },
-
+		hasBindUser: 0,
     bindLocalAccountInfo: {
       provider: null,
       bind_code: null,

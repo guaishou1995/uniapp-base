@@ -144,12 +144,7 @@ class WxValidate {
        * 验证身份证号码
        */
       idcard(value) {
-        return (
-          that.optional(value) ||
-          /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(
-            value
-          )
-        );
+        return that.optional(value) || that.checkCode(value);
       },
       /**
        * 验证两个输入框的内容是否相同
@@ -440,6 +435,28 @@ class WxValidate {
   validationErrors() {
     return this.errorList;
   }
+	
+	checkCode(val) {
+		if (val.length > 15) {
+			const p = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+			const factor = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];
+			const parity = [ 1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2 ];
+			const code = val.substring(17);
+			if(p.test(val)) {
+			    let sum = 0;
+			    for(let i=0;i<17;i++) {
+			        sum += val[i]*factor[i];
+			    }
+			    if(parity[sum % 11] == code.toUpperCase()) {
+			        return true;
+			    }
+			}
+			return false;
+		} else {
+			return /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/.test(val)
+		}
+	}
+	
 }
 
 export default WxValidate;

@@ -17,45 +17,82 @@ class Login {
    * 统一的三方服务登录/绑定入口
    * @param {String} provider 服务类型
    */
-  providerLogin(provider) {
-    return new Promise((reslove, rejcet) => {
-      uni.login({
-        provider: provider,
-        success: (res) => {
-          let resData = '';
-          switch (provider) {
-            case "weixin":
-              resData = this._loginWechat(res.code);
-              break;
-            case "alipay":
-              resData = this._loginAlipay(res.authCode);
-              break;
-            default:
-              console.warn("未知的服务:", provider);
-              break;
-          }
-          reslove(resData);
-        },
-        fail: (err) => {
-          const msgCode = {
-            [-2]: "取消了授权",
-          };
-          const msg = msgCode[err.code] || "授权失败";
-          uni.showToast({
-            title: msg,
-            icon: "none",
-          });
-          rejcet(err);
-        },
-      });
-    })
+  async providerLogin(provider) {
+		let resData = '';
+		let loginRes = {};
+		let infoRes = {};
+		let userInfo = '';
+		switch (provider) {
+			case "weixin":
+				uni.login({
+					provider: provider,
+					success(res) {
+						loginRes = res
+					},
+				})
+				if (!this.isNewVersion()) {
+					// 可以通过 uni.getSetting 先查询一下用户是否授权了
+					let setRes = await this.getSettingPro();
+					if (!setRes.authSetting["scope.userInfo"]) {
+						await this.getAuthorizePro("scope.userInfo");
+					}
+					userInfo = await this.getUserInfoPro();
+				} else {
+					userInfo = await this.getUserProfile('用于完善会员资料') ;
+				}
+				infoRes.iv = userInfo.iv;
+				infoRes.encryptedData = userInfo.encryptedData;
+				resData = this._loginWechat(loginRes.code, infoRes);
+				break;
+			case "alipay":
+				loginRes = await this.login(provider);
+				infoRes = await this.getUserInfoPro();
+				resData = this._loginAlipay(loginRes.authCode, infoRes);
+				break;
+			default:
+				console.warn("未知的服务:", provider);
+				break;
+		}
+		return resData;
   }
+	
+	/**
+	 * 网页登录 
+	 */
+	wechatLogin() {
+	  let appid = globalConfig.APPID;
+	  let redirect_uri = encodeURIComponent(globalConfig.REDIRECT_URL);
+	  window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=wechat_login#wechat_redirect`
+	}
   
-  wechatLogin() {
-    let appid = globalConfig.APPID;
-    let redirect_uri = encodeURIComponent(globalConfig.REDIRECT_URL);
-    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=wechat_login#wechat_redirect`
-  }
+	/**
+	 * 登录 
+	 */
+	login(provider) {
+		return new Promise((reslove, reject) => {
+			uni.login({
+				provider: provider,
+				success(res) {
+					reslove(res);
+				},
+				fail(e) {
+					reject(e);
+				}
+			})
+		})
+	}
+	
+	/** 
+	 * 是否新版本 
+	 */
+	isNewVersion() {
+		// #ifdef MP-WEIXIN
+		return wx.getUserProfile;
+		// #endif
+		// #ifdef MP-ALIPAY
+		return false;
+		// #endif
+	}
 
   /**
    * 获得用户设置
@@ -98,28 +135,43 @@ class Login {
       });
     });
   }
+	
+	/** 
+	 * 微信新版本获得用户信息 
+	 */
+	getUserProfile(title) {
+		return new Promise((reslove, reject) => {
+			wx.getUserProfile({
+				desc: title,
+				lang: 'zh_CN',
+				success(res) {
+					reslove(res)
+				},
+				fail(e) {
+					reject(e)
+				}
+			})
+		})
+	}
 
   /**
    * 获取用户信息
    */
   async getUserInfoPro() {
-    // #ifdef MP-WEIXIN
-    // 可以通过 uni.getSetting 先查询一下用户是否授权了
-    let setRes = await this.getSettingPro();
-    if (!setRes.authSetting["scope.userInfo"]) {
-      await this.getAuthorizePro("scope.userInfo");
-    }
-    // #endif
-    return new Promise((reslove, reject) => {
-      uni.getUserInfo({
-        success(infoRes) {
-          reslove(infoRes);
-        },
-        fail(error) {
-          reject(error);
-        },
-      });
-    });
+		try{
+			return new Promise((reslove, reject) => {
+			  uni.getUserInfo({
+			    success(infoRes) {
+			      reslove(infoRes);
+			    },
+			    fail(error) {
+			      reject(error);
+			    },
+			  });
+			});
+		}catch(e){
+			console.log(e)
+		}
   }
 
   /**
@@ -129,13 +181,17 @@ class Login {
    * 拿到三个参数后传给后台
    * @param {string} code uni.login -> code
    */
-  async _loginWechat(code) {
-    let infoRes = await this.getUserInfoPro();
+  async _loginWechat(code, infoRes) {
+		let userInfo = {}
+		if (infoRes.userInfo) {
+			userInfo = infoRes.userInfo;
+		}
     const params = {
       type: "wechat_program",
       code: code,
       iv: infoRes.iv,
       encryptedData: infoRes.encryptedData,
+			...userInfo
     };
     return await this._login3rd(params);
   }
@@ -145,8 +201,7 @@ class Login {
    * @param {String} auth_code 第三方登录服务商
    * @memberof Login
    */
-  async _loginAlipay(auth_code) {
-    let infoRes = await this.getUserInfoPro();
+  async _loginAlipay(auth_code, infoRes) {
     const info = JSON.parse(infoRes.response).response;
     const params = {
       type: "ali_program",
@@ -170,27 +225,23 @@ class Login {
       title: "加载中...",
       mask: true,
     });
-    try{
-      let res = await $http.api_login3rd(params);
-      const serverRes = res;
-      if (serverRes.bind_code) {
-        // 存下绑定信息
-        $store.commit("account/setBindLocalAccountInfo", {
-          provider: params.type,
-          bind_code: serverRes.bind_code,
-        });
-        // 前往绑定手机号后再登录
-        uni.redirectTo({
-          url: this.bindURL,
-        });
-      } else {
-        this.localSignin(serverRes);
-      }
-      uni.hideLoading();
-      return 
-    }catch(e) {
-      console.log(e)
-    }
+		let res = await $http.api_login3rd(params);
+		const serverRes = res;
+		if (serverRes.bind_code) {
+			// 存下绑定信息
+			$store.commit("account/setBindLocalAccountInfo", {
+				provider: params.type,
+				bind_code: serverRes.bind_code,
+			});
+			// 前往绑定手机号后再登录
+			uni.redirectTo({
+				url: this.bindURL,
+			});
+		} else {
+			this.localSignin(serverRes);
+		}
+		uni.hideLoading();
+		return res;
   }
 
   /**

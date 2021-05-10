@@ -1314,6 +1314,11 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+uview-ui@^1.8.4:
+  version "1.8.4"
+  resolved "http://192.168.2.18:4873/uview-ui/-/uview-ui-1.8.4.tgz#e32bbf2379421d319022e324e1cb7b5387d3bd44"
+  integrity sha512-Zr+D5dFdNy6CdHQLBEXeGq/w0LkjxzBtsgaaDwLl0P58g67H7fBBDvy6AzWK/k0c7dwPYMBiK7I4Tr9p92+0DA==
+
 v8-compile-cache@^2.0.3:
   version "2.2.0"
   resolved "http://192.168.2.18:4873/v8-compile-cache/-/v8-compile-cache-2.2.0.tgz#9471efa3ef9128d2f7c6a7ca39c4dd6b5055b132"
@@ -1335,6 +1340,11 @@ vue-eslint-parser@^7.0.0:
     espree "^6.2.1"
     esquery "^1.0.1"
     lodash "^4.17.15"
+
+vue-i18n@^8.24.4:
+  version "8.24.4"
+  resolved "http://192.168.2.18:4873/vue-i18n/-/vue-i18n-8.24.4.tgz#b158614c1df7db183d9cadddbb73e1d540269492"
+  integrity sha512-RZE94WUAGxEiBAANxQ0pptbRwDkNKNSXl3fnJslpFOxVMF6UkUtMDSuYGuW2blDrVgweIXVpethOVkYoNNT9xw==
 
 which-pm-runs@^1.0.0:
   version "1.0.0"
