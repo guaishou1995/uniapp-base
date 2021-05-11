@@ -40,6 +40,12 @@
       "token": "8ef06b299952851b96678550de30eff75f5eff575f1ec9b278879e4121f954bd",
       "outputDir": "./api",
       "fileName": "apiConfig"
+    },
+    {
+      "host": "http://192.168.2.18:3000",
+      "token": "7e338d0c58cb9a98d8a292fee45085b3b8cf7f2d98cd44a3ca00d27bbae80292",
+      "outputDir": "./api",
+      "fileName": "apiConfigTP5"
     }
   ]
 }

@@ -1,0 +1,31 @@
+@import './font-style.scss';
+@import './layout.scss';
+/* ==================
+        初始化
+ ==================== */
+body {
+	background-color: #FFFFFF;
+	font-size: $df;
+	color: $u-main-color;
+	font-family: Helvetica Neue, Helvetica, sans-serif;
+}
+
+view,
+scroll-view,
+swiper,
+button,
+input,
+textarea,
+label,
+navigator,
+image {
+	box-sizing: border-box;
+}
+
+.round {
+	border-radius: 5000rpx;
+}
+
+.radius {
+	border-radius: 6rpx;
+}

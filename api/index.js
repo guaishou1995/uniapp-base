@@ -1,4 +1,4 @@
-import { http } from "@/utils/uni/http";
+import { http } from "@/utils/http";
 import apiConfig from "./apiConfig";
 import config from "@/config";
 

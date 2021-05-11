@@ -1,0 +1,76 @@
+$xxs: 20rpx;
+$xs: 22rpx;
+$sm: 24rpx;
+$df: 28rpx;
+$lg: 32rpx;
+$xl: 34rpx;
+$xxl: 36rpx;
+$sl: 44rpx;
+
+/* ==================
+          文本
+ ==================== */
+
+.text-xxs {
+	font-size: $xxs;
+}
+
+.text-xs {
+	font-size: $xs;
+}
+
+.text-sm {
+	font-size: $sm;
+}
+
+.text-df {
+	font-size: $df;
+}
+
+.text-lg {
+	font-size: $lg;
+}
+
+.text-xl {
+	font-size: $xl;
+}
+
+.text-xxl {
+	font-size: $xxl;
+}
+
+.text-sl {
+	font-size: $sl;
+}
+
+.text-price::before {
+	content: "¥";
+	font-size: 80%;
+	margin-right: 4upx;
+}
+
+.text-cut {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.text-bold {
+	font-weight: bold;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-content {
+	line-height: 1.6;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
